@@ -1,0 +1,179 @@
+.card {
+  background: var(--white);
+  border: 1px solid #E8D9B0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: var(--gold);
+  box-shadow: var(--shadow-card);
+}
+
+/* Image */
+.imgWrap {
+  position: relative;
+  overflow: hidden;
+}
+
+/* When using next/image with fill, the wrapper needs explicit height */
+.imgWrap > span { /* Next.js wraps fill images in a span */
+  position: relative !important;
+}
+
+.img {
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.card:hover .img {
+  transform: scale(1.04);
+}
+
+.imgPlaceholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.imgIcon {
+  font-size: 36px;
+  color: rgba(201, 151, 58, 0.55);
+  line-height: 1;
+}
+
+.imgLabel {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(201, 151, 58, 0.45);
+}
+
+/* Badge */
+.badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-weight: 500;
+  z-index: 1;
+}
+
+.badgeNew  { background: var(--brown-deep); color: var(--gold-light); }
+.badgeSale { background: var(--gold);       color: var(--cream);      }
+.badgeBest { background: var(--gold-pale);  color: var(--gold-dim);   border: 1px solid var(--gold-light); }
+
+/* Hover overlay */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(44, 36, 22, 0.35);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 1rem;
+  opacity: 0;
+  transition: opacity 0.25s;
+  z-index: 1;
+}
+
+.card:hover .overlay { opacity: 1; }
+
+.overlayBtn {
+  background: var(--cream);
+  color: var(--brown-deep);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.overlayBtn:hover { background: var(--gold-pale); }
+
+/* Body */
+.body {
+  padding: 0.875rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.name {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--brown-deep);
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+  margin-bottom: 3px;
+}
+
+.subtitle {
+  font-size: 11px;
+  color: var(--brown-light);
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.price {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.oldPrice {
+  font-size: 12px;
+  color: var(--brown-muted);
+  text-decoration: line-through;
+}
+
+/* Cart button */
+.cartBtn {
+  margin-top: auto;
+  width: 100%;
+  padding: 8px 0;
+  background: transparent;
+  border: 1px solid var(--gold-light);
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.cartBtn:hover {
+  background: var(--gold);
+  color: var(--cream);
+  border-color: var(--gold);
+}
+
+.cartBtnAdded {
+  background: var(--gold-pale);
+  color: var(--gold-dim);
+  border-color: var(--gold-light);
+}

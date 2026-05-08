@@ -1,0 +1,98 @@
+.hero {
+  background: linear-gradient(135deg, var(--cream-dark) 0%, var(--cream) 50%, #F5EAC8 100%);
+  padding: 5rem 2rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 6vw, 64px);
+  font-weight: 300;
+  color: var(--brown-deep);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.divider {
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto 1.5rem;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--brown-mid);
+  letter-spacing: 0.5px;
+  line-height: 1.8;
+  max-width: 380px;
+  margin: 0 auto 2.5rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btnPrimary {
+  display: inline-block;
+  padding: 12px 32px;
+  background: var(--gold);
+  color: var(--cream);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btnPrimary:hover {
+  background: var(--gold-dim);
+  transform: translateY(-1px);
+}
+
+.btnGhost {
+  display: inline-block;
+  padding: 12px 32px;
+  border: 1px solid var(--gold-light);
+  color: var(--brown-mid);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s, color 0.2s, transform 0.15s;
+}
+
+.btnGhost:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+  .hero { padding: 3rem 1.5rem; }
+
+  .actions { flex-direction: column; align-items: center; }
+
+  .btnPrimary, .btnGhost {
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+  }
+}

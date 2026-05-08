@@ -1,0 +1,102 @@
+.footer {
+  border-top: 1px solid var(--border);
+  background: var(--cream-dark);
+  padding: 3rem 2rem 1.5rem;
+  margin-top: 2rem;
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.brand {}
+
+.logo {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--brown-deep);
+  margin-bottom: 0.75rem;
+}
+
+.logo span { color: var(--gold); }
+
+.tagline {
+  font-size: 13px;
+  color: var(--brown-light);
+  line-height: 1.7;
+  max-width: 240px;
+  margin-bottom: 1.25rem;
+}
+
+.socials { display: flex; gap: 1rem; }
+
+.social {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--brown-light);
+  transition: color 0.2s;
+}
+
+.social:hover { color: var(--gold); }
+
+.colTitle {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--brown-deep);
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.colLinks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.colLink {
+  font-size: 13px;
+  color: var(--brown-light);
+  transition: color 0.2s;
+}
+
+.colLink:hover { color: var(--gold); }
+
+.bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--brown-light);
+}
+
+.bottomLinks { display: flex; gap: 1.5rem; }
+
+.bottomLinks a { color: var(--brown-light); transition: color 0.2s; }
+.bottomLinks a:hover { color: var(--gold); }
+
+@media (max-width: 768px) {
+  .inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 480px) {
+  .inner { grid-template-columns: 1fr; }
+  .bottom { flex-direction: column; gap: 0.75rem; text-align: center; }
+}
