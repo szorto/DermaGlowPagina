@@ -1,0 +1,344 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 36, 22, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 0;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.panel {
+  background: var(--cream);
+  width: 100%;
+  max-width: 680px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 16px 48px rgba(44, 36, 22, 0.2);
+  animation: slideDown 0.2s ease;
+  overflow: hidden;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+/* Input row */
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.searchIcon {
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--brown-deep);
+  outline: none;
+  min-width: 0;
+}
+
+.input::placeholder {
+  color: var(--brown-muted);
+}
+
+.clearBtn {
+  color: var(--brown-light);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.clearBtn:hover { color: var(--brown-deep); }
+
+.closeBtn {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px 0;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.closeBtn:hover { color: var(--gold); }
+
+/* Results area */
+.results {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 3rem 2rem;
+  color: var(--brown-light);
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 28px;
+  color: var(--gold-light);
+}
+
+.empty p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.empty strong {
+  color: var(--brown-deep);
+}
+
+.resultCount {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--brown-light);
+  padding: 0.875rem 1.25rem 0.5rem;
+}
+
+.list {
+  list-style: none;
+  padding: 0 0.5rem 0.75rem;
+}
+
+.resultItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.resultItem:hover {
+  background: var(--gold-pale);
+}
+
+/* Thumbnail */
+.thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.thumbIcon {
+  font-size: 22px;
+  color: rgba(201, 151, 58, 0.6);
+}
+
+/* Item info */
+.itemInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.itemName {
+  font-size: 14px;
+  color: var(--brown-deep);
+  font-weight: 400;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.itemSub {
+  font-size: 11px;
+  color: var(--brown-light);
+  letter-spacing: 0.5px;
+}
+
+/* Price */
+.itemRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+  gap: 2px;
+}
+
+.itemPrice {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.itemOld {
+  font-size: 11px;
+  color: var(--brown-muted);
+  text-decoration: line-through;
+}
+
+.arrow {
+  color: var(--brown-light);
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.resultItem:hover .arrow {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+/* Highlight */
+.mark {
+  background: var(--gold-pale);
+  color: var(--gold-dim);
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .panel {
+    max-width: 100%;
+    border-radius: 0 0 16px 16px;
+    max-height: 85vh;
+  }
+
+  .inputRow {
+    padding: 0.875rem 1rem;
+  }
+
+  .input {
+    font-size: 16px; /* prevents iOS zoom */
+  }
+
+  .thumb {
+    width: 44px;
+    height: 44px;
+  }
+
+  .itemName {
+    font-size: 13px;
+  }
+}
+
+/* Search button */
+.searchBtn {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 7px 14px;
+  background: var(--gold);
+  color: var(--cream);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s;
+  font-family: var(--font-body);
+}
+
+.searchBtn:hover:not(:disabled) { background: var(--gold-dim); }
+
+.searchBtn:disabled {
+  background: var(--gold-light);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Rename old closeBtn → cancelBtn */
+.cancelBtn {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--brown-light);
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px 0;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.cancelBtn:hover { color: var(--brown-deep); }
+
+/* Loading spinner */
+.spinner {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--gold-light);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Ver todos button */
+.verTodosBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: calc(100% - 1rem);
+  margin: 0.25rem 0.5rem 0.75rem;
+  padding: 0.875rem;
+  background: var(--gold-pale);
+  border: 1px solid var(--gold-light);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.verTodosBtn:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--cream);
+}

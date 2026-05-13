@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import styles from './Footer.module.css';
 
-const footerLinks: Record<string, { label: string; href: string }[]> = {
+{/*const footerLinks: Record<string, { label: string; href: string }[]> = {
   Productos: [
     { label: 'Skincare',     href: '/#bestsellers' },
     { label: 'Serums',       href: '/#new' },
@@ -21,7 +21,7 @@ const footerLinks: Record<string, { label: string; href: string }[]> = {
     { label: 'Sustentabilidad',  href: '/sustentabilidad' },
     { label: 'Blog',             href: '/blog' },
   ],
-};
+};*/}
 
 export default function Footer() {
   return (
@@ -36,13 +36,13 @@ export default function Footer() {
             Rituales de lujo para una piel radiante, naturalmente.
           </p>
           <div className={styles.socials}>
-            {['Instagram', 'TikTok', 'Pinterest'].map((s) => (
-              <a key={s} href="#" className={styles.social}>{s}</a>
+            {['Instagram'].map((s) => (
+              <a key={s} href="https://www.instagram.com/dermaglowsc" className={styles.social}>{s}</a>
             ))}
           </div>
         </div>
 
-        {/* Link columns */}
+        {/* Link columns 
         {Object.entries(footerLinks).map(([group, links]) => (
           <div key={group} className={styles.col}>
             <h4 className={styles.colTitle}>{group}</h4>
@@ -54,15 +54,15 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-        ))}
+        ))} */}
       </div>
 
       <div className={styles.bottom}>
-        <p>© 2025 DermaGlow · Todos los derechos reservados</p>
+        <p>© 2026 DermaGlow · Todos los derechos reservados</p>
         <div className={styles.bottomLinks}>
-          <Link href="/privacidad">Privacidad</Link>
+          {/*<Link href="/privacidad">Privacidad</Link>
           <Link href="/terminos">Términos</Link>
-          <Link href="/cookies">Cookies</Link>
+          <Link href="/cookies">Cookies</Link>*/}
         </div>
       </div>
     </footer>
