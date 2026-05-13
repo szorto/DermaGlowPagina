@@ -1,15 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { type Product, formatPrice } from '@/data/products';
+import { type Product, formatPrice, displayPrice, originalPrice } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import AddedToCartToast from './AddedToCartToast';
+import CartDrawer from './CartDrawer';
 import styles from './ProductModal.module.css';
 
 interface Props {
   product: Product | null;
   onClose: () => void;
-  onOpenCart?: () => void; // called when "Ver carrito" is pressed in toast
+  onOpenCart?: () => void;
 }
 
 const ICON_CHARS: Record<string, string> = {
@@ -23,16 +24,15 @@ const BADGE_LABELS: Record<string, string> = {
 
 export default function ProductModal({ product, onClose, onOpenCart }: Props) {
   const { addItem } = useCart();
-  const [toast, setToast] = useState(false);
+  const [toast, setToast]       = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
 
-  // Close on Escape
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
   }, [onClose]);
 
-  // Lock body scroll
   useEffect(() => {
     if (product) document.body.style.overflow = 'hidden';
     else         document.body.style.overflow = '';
@@ -47,18 +47,23 @@ export default function ProductModal({ product, onClose, onOpenCart }: Props) {
 
   const handleViewCart = () => {
     setToast(false);
-    onClose();           // close the product modal first
-    onOpenCart?.();      // then open the cart drawer
+    onClose();
+    if (onOpenCart) onOpenCart();
+    else setCartOpen(true);
   };
 
   if (!product) return null;
+
+  const sale = originalPrice(product);
+  const discountPct = sale
+    ? Math.round((1 - displayPrice(product) / product.precio) * 100)
+    : null;
 
   return (
     <>
       <div className={styles.backdrop} onClick={onClose} role="dialog" aria-modal="true">
         <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
 
-          {/* Close button */}
           <button className={styles.closeBtn} onClick={onClose} aria-label="Cerrar">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M18 6 6 18M6 6l12 12" />
@@ -67,34 +72,36 @@ export default function ProductModal({ product, onClose, onOpenCart }: Props) {
 
           {/* Image */}
           <div className={styles.imgWrap}>
-            {product.image ? (
-              <img src={product.image} alt={product.name} className={styles.img} />
+            {product.imagen ? (
+              <img src={product.imagen} alt={product.nombre} className={styles.img} />
             ) : (
               <div
                 className={styles.imgPlaceholder}
-                style={{ background: `linear-gradient(145deg, ${product.bg}, #FDFBF7)` }}
+                style={{ background: `linear-gradient(145deg, ${product.bg ?? '#F5EAC8'}, #FDFBF7)` }}
               >
-                <span className={styles.imgIcon}>{ICON_CHARS[product.icon] ?? '◈'}</span>
+                <span className={styles.imgIcon}>{ICON_CHARS[product.icon ?? ''] ?? '◈'}</span>
               </div>
             )}
 
-            {product.badge && (
-              <span className={`${styles.badge} ${styles[`badge_${product.badge}`]}`}>
-                {BADGE_LABELS[product.badge]}
+            {product.estado && (
+              <span className={`${styles.badge} ${styles[`badge_${product.estado}`]}`}>
+                {BADGE_LABELS[product.estado]}
               </span>
             )}
           </div>
 
           {/* Info */}
           <div className={styles.info}>
-            <p className={styles.subtitle}>{product.subtitle}</p>
-            <h2 className={styles.name}>{product.name}</h2>
+            <p className={styles.subtitleText}>{product.categoria}</p>
+            <h2 className={styles.name}>{product.nombre}</h2>
 
             <div className={styles.divider} />
 
-            <p className={styles.description}>{product.description}</p>
+            {product.description && (
+              <p className={styles.description}>{product.description}</p>
+            )}
 
-            {product.highlights && (
+            {product.highlights && product.highlights.length > 0 && (
               <ul className={styles.highlights}>
                 {product.highlights.map((h, i) => (
                   <li key={i} className={styles.highlight}>
@@ -106,20 +113,10 @@ export default function ProductModal({ product, onClose, onOpenCart }: Props) {
             )}
 
             <div className={styles.priceRow}>
-              <span className={styles.price}>{formatPrice(product.price)}</span>
-              {product.oldPrice && (
-                <span className={styles.oldPrice}>{formatPrice(product.oldPrice)}</span>
-              )}
-              {product.oldPrice && (
-                <span className={styles.discount}>
-                  -{Math.round((1 - product.price / product.oldPrice) * 100)}%
-                </span>
-              )}
+              <span className={styles.price}>{formatPrice(displayPrice(product))}</span>
+              {sale && <span className={styles.oldPrice}>{formatPrice(product.precio)}</span>}
+              {discountPct && <span className={styles.discount}>-{discountPct}%</span>}
             </div>
-
-            {product.size && (
-              <p className={styles.size}>{product.size}</p>
-            )}
 
             <div className={styles.actions}>
               <button className={styles.cartBtn} onClick={handleAddToCart}>
@@ -131,7 +128,6 @@ export default function ProductModal({ product, onClose, onOpenCart }: Props) {
                 Agregar al carrito
               </button>
             </div>
-
           </div>
 
         </div>
@@ -144,6 +140,8 @@ export default function ProductModal({ product, onClose, onOpenCart }: Props) {
           onViewCart={handleViewCart}
         />
       )}
+
+      {cartOpen && <CartDrawer onClose={() => setCartOpen(false)} />}
     </>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
-import { formatPrice } from '@/data/products';
+import { formatPrice, displayPrice } from '@/data/products';
 import styles from './CartDrawer.module.css';
 
 const ICON_CHARS: Record<string, string> = {
@@ -70,28 +70,27 @@ export default function CartDrawer({ onClose }: Props) {
                   {/* Thumbnail */}
                   <div
                     className={styles.thumb}
-                    style={{ background: `linear-gradient(145deg, ${product.bg}, #FDFBF7)` }}
+                    style={{ background: `linear-gradient(145deg, ${product.bg ?? '#F5EAC8'}, #FDFBF7)` }}
                   >
                     <span className={styles.thumbIcon}>
-                      {product.image
-                        ? <img src={product.image} alt={product.name} className={styles.thumbImg} />
-                        : ICON_CHARS[product.icon] ?? '◈'
+                      {product.imagen
+                        ? <img src={product.imagen} alt={product.nombre} className={styles.thumbImg} />
+                        : ICON_CHARS[product.icon ?? ''] ?? '◈'
                       }
                     </span>
                   </div>
 
                   {/* Info */}
                   <div className={styles.itemInfo}>
-                    <p className={styles.itemName}>{product.name}</p>
-                    <p className={styles.itemSub}>{product.subtitle}</p>
-                    {product.size && <p className={styles.itemSize}>{product.size}</p>}
+                    <p className={styles.itemName}>{product.nombre}</p>
+                    {product.subtitle && <p className={styles.itemSub}>{product.subtitle}</p>}
 
                     <div className={styles.itemBottom}>
                       {/* Quantity controls */}
                       <div className={styles.qty}>
                         <button
                           className={styles.qtyBtn}
-                          onClick={() => updateQuantity(product.id, quantity - 1)}
+                          onClick={() => updateQuantity(product._id, quantity - 1)}
                           aria-label="Disminuir cantidad"
                         >
                           −
@@ -99,7 +98,7 @@ export default function CartDrawer({ onClose }: Props) {
                         <span className={styles.qtyNum}>{quantity}</span>
                         <button
                           className={styles.qtyBtn}
-                          onClick={() => updateQuantity(product.id, quantity + 1)}
+                          onClick={() => updateQuantity(product._id, quantity + 1)}
                           aria-label="Aumentar cantidad"
                         >
                           +
@@ -107,7 +106,7 @@ export default function CartDrawer({ onClose }: Props) {
                       </div>
 
                       <span className={styles.itemPrice}>
-                        {formatPrice(product.price * quantity)}
+                        {formatPrice(displayPrice(product) * quantity)}
                       </span>
                     </div>
                   </div>
@@ -115,7 +114,7 @@ export default function CartDrawer({ onClose }: Props) {
                   {/* Remove */}
                   <button
                     className={styles.removeBtn}
-                    onClick={() => removeItem(product.id)}
+                    onClick={() => removeItem(product._id)}
                     aria-label="Eliminar producto"
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

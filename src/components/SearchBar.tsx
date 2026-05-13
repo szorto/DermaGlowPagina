@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { categories, formatPrice, type Product } from '@/data/products';
+import { formatPrice, displayPrice, originalPrice, searchProductsAPI, type Product } from '@/data/products';
 import ProductModal from './ProductModal';
 import styles from './SearchBar.module.css';
 
@@ -88,7 +88,7 @@ export default function SearchBar({ onClose }: Props) {
     if (!debouncedQuery) return;
     let cancelled = false;
     setLoading(true);
-    searchProducts(normalize(debouncedQuery)).then((res) => {
+    searchProductsAPI(debouncedQuery).then((res) => {
       if (!cancelled) { setResults(res); setLoading(false); }
     });
     return () => { cancelled = true; };
@@ -197,25 +197,25 @@ export default function SearchBar({ onClose }: Props) {
                 </p>
                 <ul className={styles.list}>
                   {preview.map((product) => (
-                    <li key={product.id}>
+                    <li key={product._id}>
                       <button
                         className={styles.resultItem}
                         onClick={() => setSelectedProduct(product)}
                       >
                         <div
                           className={styles.thumb}
-                          style={{ background: `linear-gradient(145deg, ${product.bg}, #FDFBF7)` }}
+                          style={{ background: `linear-gradient(145deg, ${product.bg ?? '#F5EAC8'}, #FDFBF7)` }}
                         >
-                          <span className={styles.thumbIcon}>{ICON_CHARS[product.icon] ?? '◈'}</span>
+                          <span className={styles.thumbIcon}>{ICON_CHARS[product.icon ?? ''] ?? '◈'}</span>
                         </div>
 
                         <div className={styles.itemInfo}>
-                          <p className={styles.itemName}>{highlight(product.name, debouncedQuery)}</p>
-                          <p className={styles.itemSub}>{highlight(product.subtitle, debouncedQuery)}</p>
+                          <p className={styles.itemName}>{highlight(product.nombre, debouncedQuery)}</p>
+                          <p className={styles.itemSub}>{highlight(product.subtitle ?? product.categoria, debouncedQuery)}</p>
                         </div>
 
                         <div className={styles.itemRight}>
-                          <span className={styles.itemPrice}>{formatPrice(product.price)}</span>
+                          <span className={styles.itemPrice}>{formatPrice(displayPrice(product))}</span>
                           {product.oldPrice && (
                             <span className={styles.itemOld}>{formatPrice(product.oldPrice)}</span>
                           )}

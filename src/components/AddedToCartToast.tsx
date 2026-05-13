@@ -43,14 +43,14 @@ export default function AddedToCartToast({ product, onDismiss, onViewCart }: Pro
 
       <div
         className={styles.thumb}
-        style={{ background: `linear-gradient(145deg, ${product.bg}, #FDFBF7)` }}
+        style={{ background: `linear-gradient(145deg, ${product.bg ?? '#F5EAC8'}, #FDFBF7)` }}
       >
-        <span className={styles.thumbIcon}>{ICON_CHARS[product.icon] ?? '◈'}</span>
+        <span className={styles.thumbIcon}>{ICON_CHARS[product.icon ?? ''] ?? '◈'}</span>
       </div>
 
       <div className={styles.info}>
         <p className={styles.label}>Agregado al carrito</p>
-        <p className={styles.name}>{product.name}</p>
+        <p className={styles.name}>{product.nombre}</p>
       </div>
 
       <button className={styles.viewBtn} onClick={onViewCart}>

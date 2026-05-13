@@ -1,9 +1,9 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useMemo, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { categories, formatPrice, type Product } from '@/data/products';
+import { searchProductsAPI, type Product } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
 import styles from './buscar.module.css';
 
