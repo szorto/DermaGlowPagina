@@ -5,7 +5,7 @@ import { requireApiKey } from '@/lib/authMiddleware';
 import { serializeProduct } from '@/lib/productHelpers';
 
 interface Params {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 // GET /api/products/:id
