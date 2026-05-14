@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './login.module.css';
 
+export const dynamic = 'force-dynamic';
+
 export default function AdminLogin() {
   const router = useRouter();
   const [username, setUsername] = useState('');
