@@ -113,7 +113,7 @@ export async function POST(req: NextRequest) {
           Authorization: `Bearer ${resendKey}`,
         },
         body: JSON.stringify({
-          from:    'dermaglowsc@outlook.com', // change to your verified Resend domain
+          from:    'onboarding@resend.dev', // change to your verified Resend domain
           to:      [notifyEmail],
           subject: `NUEVO PEDIDO — L ${Number(total).toLocaleString('es-HN')} — ${doc.telefono}`,
           html,
