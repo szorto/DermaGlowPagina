@@ -1,21 +1,78 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
-import { Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { fetchByCategory, type Product } from '@/data/products';
+import { type Product } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
 import styles from './categoria.module.css';
 
+async function fetchCategoryClient(categoria: string): Promise<Product[]> {
+  const res = await fetch(`/api/products?categoria=${encodeURIComponent(categoria)}`);
+  if (!res.ok) return [];
+  return res.json();
+}
 
-const normalize = (s: string) =>
-  s.toLowerCase()
-   .normalize('NFKD')
-   .split('')
-   .filter(c => c.charCodeAt(0) < 0x0300 || c.charCodeAt(0) > 0x036F)
-   .join('');
+function CategoriaContent() {
+  const searchParams            = useSearchParams();
+  const nombre                  = searchParams.get('nombre') ?? '';
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading]   = useState(false);
 
+  useEffect(() => {
+    if (!nombre) return;
+    setLoading(true);
+    fetchCategoryClient(nombre)
+      .then(setProducts)
+      .finally(() => setLoading(false));
+  }, [nombre]);
+
+  return (
+    <main className={styles.page}>
+      <div className={styles.header}>
+        <Link href="/" className={styles.back}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="m15 18-6-6 6-6" />
+          </svg>
+          Volver
+        </Link>
+
+        <div className={styles.titleGroup}>
+          <p className={styles.eyebrow}>Categoría</p>
+          <h1 className={styles.title}>{nombre}</h1>
+          {!loading && products.length > 0 && (
+            <p className={styles.count}>
+              {products.length} {products.length === 1 ? 'producto' : 'productos'}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {loading && (
+        <div className={styles.empty}>
+          <p>Cargando productos...</p>
+        </div>
+      )}
+
+      {!loading && products.length === 0 && nombre && (
+        <div className={styles.empty}>
+          <span className={styles.emptyIcon}>◈</span>
+          <p>No hay productos en esta categoría todavía.</p>
+          <p className={styles.emptySub}>Pronto agregaremos productos aquí.</p>
+          <Link href="/" className={styles.emptyBtn}>Ver todos los productos</Link>
+        </div>
+      )}
+
+      {products.length > 0 && (
+        <div className={styles.grid}>
+          {products.map((product) => (
+            <ProductCard key={product._id} product={product} />
+          ))}
+        </div>
+      )}
+    </main>
+  );
+}
 
 export default function CategoriaPage() {
   return (
@@ -24,7 +81,7 @@ export default function CategoriaPage() {
         Cargando categoría...
       </div>
     }>
-      
+      <CategoriaContent />
     </Suspense>
   );
 }

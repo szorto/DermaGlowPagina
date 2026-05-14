@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     }
 
     const db  = await getDb();
-    const col = db.collection('products');
+    const col = db.collection('DGDB');
 
     const filter = buildSearchFilter(q);
     const docs   = await col.find(filter).limit(limit).toArray();

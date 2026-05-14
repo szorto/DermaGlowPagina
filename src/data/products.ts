@@ -46,52 +46,12 @@ export const formatPrice = (amount: number): string =>
 
 // ─── Fetching (swap these for real API calls when backend is ready) ────────────
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? '';
-
-// GET /api/products  →  Product[]
-export async function fetchProducts(): Promise<Product[]> {
-  if (BASE_URL) {
-    const res = await fetch(`${BASE_URL}/api/products`, { next: { revalidate: 60 } });
-    if (!res.ok) throw new Error('Error fetching products');
-    return res.json();
-  }
-  // ── Fallback mock data (remove when API is live) ──
-  return MOCK_PRODUCTS;
-}
-
-// GET /api/products?categoria=Serums  →  Product[]
-export async function fetchByCategory(categoria: string): Promise<Product[]> {
-  if (BASE_URL) {
-    const res = await fetch(
-      `${BASE_URL}/api/products?categoria=${encodeURIComponent(categoria)}`,
-      { next: { revalidate: 60 } }
-    );
-    if (!res.ok) throw new Error('Error fetching category');
-    return res.json();
-  }
-  return MOCK_PRODUCTS.filter((p) => p.categoria === categoria);
-}
-
-// GET /api/products/search?q=serum  →  Product[]
+// Used by Client Components (SearchBar, buscar page) — calls the API route
+// For Server Components, import from '@/data/products.server' instead
 export async function searchProductsAPI(q: string): Promise<Product[]> {
-  if (BASE_URL) {
-    const res = await fetch(
-      `${BASE_URL}/api/products/search?q=${encodeURIComponent(q)}`
-    );
-    if (!res.ok) throw new Error('Error searching products');
-    return res.json();
-  }
-  // Local fallback search
-  const normalize = (s: string) =>
-    s.toLowerCase().normalize('NFKD').split('').filter(c => c.charCodeAt(0) < 0x0300 || c.charCodeAt(0) > 0x036F).join('');
-  const nq = normalize(q);
-  return MOCK_PRODUCTS.filter((p) =>
-    normalize(p.nombre).includes(nq) ||
-    normalize(p.categoria).includes(nq) ||
-    normalize(p.subtitle ?? '').includes(nq) ||
-    normalize(p.description ?? '').includes(nq) ||
-    (p.highlights?.some((h) => normalize(h).includes(nq)))
-  );
+  const res = await fetch(`/api/products/search?q=${encodeURIComponent(q)}`);
+  if (!res.ok) throw new Error('Error searching products');
+  return res.json();
 }
 
 // ─── Mock data (delete once MongoDB is connected) ─────────────────────────────

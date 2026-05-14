@@ -61,3 +61,16 @@ img {
   display: block;
   max-width: 100%;
 }
+
+.pageContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .pageContent {
+    padding: 2rem 1rem;
+  }
+}

@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     const skip      = Number(searchParams.get('skip') ?? 0);
 
     const db = await getDb();
-    const col = db.collection('products');
+    const col = db.collection('DGDB');
 
     // Build filter
     const filter: Record<string, unknown> = {};
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
     }
 
     const db  = await getDb();
-    const col = db.collection('products');
+    const col = db.collection('DGDB');
 
     const doc = {
       nombre:     String(body.nombre),

@@ -15,7 +15,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
       return NextResponse.json({ error: 'Invalid product ID' }, { status: 400 });
     }
     const db  = await getDb();
-    const col = db.collection('products');
+    const col = db.collection('DGDB');
     const doc = await col.findOne({ _id: new ObjectId(id) });
     if (!doc) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
@@ -44,7 +44,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
     if (updates.precio      != null) updates.precio      = Number(updates.precio);
     if (updates.precioNuevo != null) updates.precioNuevo = Number(updates.precioNuevo);
     const db  = await getDb();
-    const col = db.collection('products');
+    const col = db.collection('DGDB');
     const result = await col.findOneAndUpdate(
       { _id: new ObjectId(id) },
       { $set: updates },
@@ -69,7 +69,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
       return NextResponse.json({ error: 'Invalid product ID' }, { status: 400 });
     }
     const db  = await getDb();
-    const col = db.collection('products');
+    const col = db.collection('DGDB');
     const result = await col.deleteOne({ _id: new ObjectId(id) });
     if (result.deletedCount === 0) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });

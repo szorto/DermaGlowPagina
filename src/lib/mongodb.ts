@@ -24,6 +24,8 @@ if (process.env.NODE_ENV === 'development') {
   client = new MongoClient(uri);
 }
 
+export const COLLECTION = process.env.MONGODB_COLLECTION ?? 'DGDB';
+
 export async function getDb() {
   await client.connect();
   return client.db(process.env.MONGODB_DB ?? 'dermaglow');
