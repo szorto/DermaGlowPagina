@@ -4,6 +4,8 @@ import ProductGrid from '@/components/ProductGrid';
 import { fetchProducts } from '@/data/products.server';
 import { type Product, type Category } from '@/data/products';
 
+export const revalidate = 60;
+
 export default async function Home() {
   const products = await fetchProducts();
 

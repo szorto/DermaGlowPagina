@@ -4,6 +4,8 @@
 import { getDb } from '@/lib/mongodb';
 import { type Product } from './products';
 
+export const revalidate = 60;
+
 function serialize(doc: Record<string, unknown>): Product {
   const { _id, ...rest } = doc;
   return { _id: String(_id), ...rest } as Product;
