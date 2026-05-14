@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { formatPrice, displayPrice, originalPrice, searchProductsAPI, type Product } from '@/data/products';
+import { formatPrice, displayPrice, searchProductsAPI, type Product } from '@/data/products';
 import ProductModal from './ProductModal';
 import styles from './SearchBar.module.css';
 
@@ -12,24 +12,7 @@ const ICON_CHARS: Record<string, string> = {
 };
 
 const PREVIEW_LIMIT = 3;
-
-// Removes accents: "sérum" → "serum", works both ways
-const normalize = (s: string) =>
-  s.toLowerCase().normalize("NFKD").split("").filter(c => c.charCodeAt(0) < 0x0300 || c.charCodeAt(0) > 0x036F).join("");
-
-const DEBOUNCE_MS = 350; // ready to swap for a real API call
-
-// Local search — replace this function body with a fetch() when you have a backend
-async function searchProducts(q: string): Promise<Product[]> {
-  const allProducts = categories.flatMap((c) => c.products);
-  return allProducts.filter(
-    (p) =>
-      normalize(p.name).includes(q) ||
-      normalize(p.subtitle).includes(q) ||
-      normalize(p.description).includes(q) ||
-      (p.highlights?.some((h) => normalize(h).includes(q)))
-  );
-}
+const DEBOUNCE_MS   = 350;
 
 function highlight(text: string, query: string) {
   if (!query) return <>{text}</>;
@@ -50,31 +33,27 @@ interface Props {
 
 export default function SearchBar({ onClose }: Props) {
   const router = useRouter();
-  const [query, setQuery]               = useState('');
-  const [debouncedQuery, setDebouncedQuery] = useState('');
-  const [results, setResults]           = useState<Product[]>([]);
-  const [loading, setLoading]           = useState(false);
+  const [query, setQuery]                     = useState('');
+  const [debouncedQuery, setDebouncedQuery]   = useState('');
+  const [results, setResults]                 = useState<Product[]>([]);
+  const [loading, setLoading]                 = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const inputRef  = useRef<HTMLInputElement>(null);
+  const inputRef    = useRef<HTMLInputElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Auto-focus
   useEffect(() => { inputRef.current?.focus(); }, []);
 
-  // Escape to close
   useEffect(() => {
     const h = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', h);
     return () => document.removeEventListener('keydown', h);
   }, [onClose]);
 
-  // Lock body scroll
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
   }, []);
 
-  // Debounce input → debouncedQuery
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setQuery(val);
@@ -83,7 +62,6 @@ export default function SearchBar({ onClose }: Props) {
     debounceRef.current = setTimeout(() => setDebouncedQuery(val.trim()), DEBOUNCE_MS);
   };
 
-  // Fire search when debouncedQuery changes
   useEffect(() => {
     if (!debouncedQuery) return;
     let cancelled = false;
@@ -94,7 +72,6 @@ export default function SearchBar({ onClose }: Props) {
     return () => { cancelled = true; };
   }, [debouncedQuery]);
 
-  // Submit on Enter or button click
   const handleSubmit = useCallback(() => {
     const q = query.trim();
     if (!q) return;
@@ -111,17 +88,16 @@ export default function SearchBar({ onClose }: Props) {
     router.push(`/buscar?q=${encodeURIComponent(query.trim())}`);
   };
 
-  const preview      = results.slice(0, PREVIEW_LIMIT);
-  const hasMore      = results.length > PREVIEW_LIMIT;
-  const showEmpty    = debouncedQuery && !loading && results.length === 0;
-  const showResults  = !loading && preview.length > 0;
+  const preview     = results.slice(0, PREVIEW_LIMIT);
+  const hasMore     = results.length > PREVIEW_LIMIT;
+  const showEmpty   = debouncedQuery && !loading && results.length === 0;
+  const showResults = !loading && preview.length > 0;
 
   return (
     <>
       <div className={styles.backdrop} onClick={onClose}>
         <div className={styles.panel} onClick={(e) => e.stopPropagation()}>
 
-          {/* Input row */}
           <div className={styles.inputRow}>
             <svg className={styles.searchIcon} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <circle cx="11" cy="11" r="7" /><path d="m21 21-4.35-4.35" />
@@ -149,11 +125,7 @@ export default function SearchBar({ onClose }: Props) {
               </button>
             )}
 
-            <button
-              className={styles.searchBtn}
-              onClick={handleSubmit}
-              disabled={!query.trim()}
-            >
+            <button className={styles.searchBtn} onClick={handleSubmit} disabled={!query.trim()}>
               Buscar
             </button>
 
@@ -162,10 +134,7 @@ export default function SearchBar({ onClose }: Props) {
             </button>
           </div>
 
-          {/* Results area */}
           <div className={styles.results}>
-
-            {/* Idle state */}
             {!query && (
               <div className={styles.empty}>
                 <span className={styles.emptyIcon}>✦</span>
@@ -173,7 +142,6 @@ export default function SearchBar({ onClose }: Props) {
               </div>
             )}
 
-            {/* Loading */}
             {loading && (
               <div className={styles.empty}>
                 <span className={styles.spinner} />
@@ -181,7 +149,6 @@ export default function SearchBar({ onClose }: Props) {
               </div>
             )}
 
-            {/* No results */}
             {showEmpty && (
               <div className={styles.empty}>
                 <span className={styles.emptyIcon}>◈</span>
@@ -189,7 +156,6 @@ export default function SearchBar({ onClose }: Props) {
               </div>
             )}
 
-            {/* Preview list */}
             {showResults && (
               <>
                 <p className={styles.resultCount}>
@@ -216,9 +182,6 @@ export default function SearchBar({ onClose }: Props) {
 
                         <div className={styles.itemRight}>
                           <span className={styles.itemPrice}>{formatPrice(displayPrice(product))}</span>
-                          {product.oldPrice && (
-                            <span className={styles.itemOld}>{formatPrice(product.oldPrice)}</span>
-                          )}
                         </div>
 
                         <svg className={styles.arrow} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -229,7 +192,6 @@ export default function SearchBar({ onClose }: Props) {
                   ))}
                 </ul>
 
-                {/* Ver todos — only if more than 3 results */}
                 {hasMore && (
                   <button className={styles.verTodosBtn} onClick={handleVerTodos}>
                     Ver todos los resultados ({results.length})
@@ -240,7 +202,6 @@ export default function SearchBar({ onClose }: Props) {
                 )}
               </>
             )}
-
           </div>
         </div>
       </div>

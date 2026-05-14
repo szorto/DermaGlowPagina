@@ -24,7 +24,7 @@ export default function CategoriaPage() {
         Cargando categoría...
       </div>
     }>
-      <CategoriaContent />
+      
     </Suspense>
   );
 }

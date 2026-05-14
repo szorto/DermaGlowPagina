@@ -66,7 +66,7 @@ export default function CartDrawer({ onClose }: Props) {
           <>
             <ul className={styles.list}>
               {items.map(({ product, quantity }) => (
-                <li key={product.id} className={styles.item}>
+                <li key={product._id} className={styles.item}>
                   {/* Thumbnail */}
                   <div
                     className={styles.thumb}

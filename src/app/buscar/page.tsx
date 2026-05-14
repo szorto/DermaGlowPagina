@@ -7,31 +7,22 @@ import { searchProductsAPI, type Product } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
 import styles from './buscar.module.css';
 
-const normalize = (s: string) =>
-  s.toLowerCase().normalize("NFKD").split("").filter(c => c.charCodeAt(0) < 0x0300 || c.charCodeAt(0) > 0x036F).join("");
-
-const allProducts = categories.flatMap((c) => c.products);
-
 function SearchResults() {
-  const searchParams  = useSearchParams();
-  const query         = searchParams.get('q') ?? '';
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const searchParams          = useSearchParams();
+  const query                 = searchParams.get('q') ?? '';
+  const [results, setResults] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const results = useMemo(() => {
-    const q = normalize(query.trim());
-    if (!q) return [];
-    return allProducts.filter(
-      (p) =>
-        normalize(p.name).includes(q) ||
-        normalize(p.subtitle).includes(q) ||
-        normalize(p.description).includes(q) ||
-        (p.highlights?.some((h) => normalize(h).includes(q)))
-    );
+  useEffect(() => {
+    if (!query.trim()) return;
+    setLoading(true);
+    searchProductsAPI(query)
+      .then(setResults)
+      .finally(() => setLoading(false));
   }, [query]);
 
   return (
     <main className={styles.page}>
-      {/* Header */}
       <div className={styles.header}>
         <Link href="/" className={styles.back}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -42,12 +33,14 @@ function SearchResults() {
 
         <div className={styles.titleGroup}>
           <h1 className={styles.title}>
-            {results.length > 0
-              ? <>Resultados para <em>"{query}"</em></>
-              : <>Sin resultados para <em>"{query}"</em></>
+            {loading
+              ? <>Buscando <em>"{query}"</em>...</>
+              : results.length > 0
+                ? <>Resultados para <em>"{query}"</em></>
+                : <>Sin resultados para <em>"{query}"</em></>
             }
           </h1>
-          {results.length > 0 && (
+          {!loading && results.length > 0 && (
             <p className={styles.count}>
               {results.length} {results.length === 1 ? 'producto encontrado' : 'productos encontrados'}
             </p>
@@ -55,8 +48,7 @@ function SearchResults() {
         </div>
       </div>
 
-      {/* No results */}
-      {results.length === 0 && (
+      {!loading && results.length === 0 && query && (
         <div className={styles.empty}>
           <span className={styles.emptyIcon}>◈</span>
           <p>No encontramos productos que coincidan con tu búsqueda.</p>
@@ -65,11 +57,10 @@ function SearchResults() {
         </div>
       )}
 
-      {/* Results grid */}
       {results.length > 0 && (
         <div className={styles.grid}>
           {results.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product._id} product={product} />
           ))}
         </div>
       )}
