@@ -131,7 +131,7 @@ export default function CartDrawer({ onClose }: Props) {
                 <span className={styles.subtotalLabel}>Subtotal</span>
                 <span className={styles.subtotalPrice}>{formatPrice(totalPrice)}</span>
               </div>
-              <p className={styles.shipping}>Envío gratis en compras mayores a $500 MXN</p>
+              <p className={styles.shipping}>Temporal</p>
 
               <button className={styles.checkoutBtn}>
                 Proceder al pago
