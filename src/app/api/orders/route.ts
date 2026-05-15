@@ -7,6 +7,7 @@ import nodemailer from "nodemailer";
 
 export interface OrderItem {
   _id: string;
+  sku?: string;
   nombre: string;
   categoria: string;
   precio: number; // original price
@@ -71,10 +72,13 @@ export async function POST(req: NextRequest) {
         .map(
           (i: OrderItem) =>
             `<tr>
-          <td style="padding:8px 12px;border-bottom:1px solid #f0e8d0;">${i.nombre}</td>
-          <td style="padding:8px 12px;border-bottom:1px solid #f0e8d0;text-align:center;">${i.cantidad}</td>
-          <td style="padding:8px 12px;border-bottom:1px solid #f0e8d0;text-align:right;">L ${i.subtotal.toLocaleString("es-HN")}</td>
-        </tr>`,
+        <td style="padding:8px 12px;border-bottom:1px solid #f0e8d0;">
+          ${i.nombre}
+          ${i.sku ? `<br><span style="font-size:11px;color:#8a7560;font-family:monospace;">${i.sku}</span>` : ""}
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0e8d0;text-align:center;">${i.cantidad}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0e8d0;text-align:right;">L ${i.subtotal.toLocaleString("es-HN")}</td>
+      </tr>`,
         )
         .join("");
 

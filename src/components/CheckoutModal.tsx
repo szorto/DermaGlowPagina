@@ -32,6 +32,7 @@ export default function CheckoutModal({ onClose, onSuccess }: Props) {
 
     const orderItems = items.map(({ product, quantity }) => ({
       _id:        product._id,
+      sku:        product.sku,
       nombre:     product.nombre,
       categoria:  product.categoria,
       precio:     product.precio,

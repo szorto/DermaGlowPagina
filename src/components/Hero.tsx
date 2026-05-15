@@ -4,9 +4,9 @@ import styles from './Hero.module.css';
 export default function Hero() {
   return (
     <section className={styles.hero}>
-      <p className={styles.eyebrow}>Colección 2025</p>
+      <p className={styles.eyebrow}>Colección 2026</p>
       <h1 className={styles.title}>
-        Tu ritual de<br />
+        Tu línea de<br />
         <em>belleza premium</em>
       </h1>
       <div className={styles.divider} />
