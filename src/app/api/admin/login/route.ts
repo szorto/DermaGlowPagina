@@ -7,10 +7,6 @@ export async function POST(req: NextRequest) {
   const validUser = process.env.ADMIN_USERNAME ?? 'admin';
   const validPass = process.env.ADMIN_PASSWORD;
 
-  console.log('got:', JSON.stringify({ username, password }));
-  console.log('expected:', JSON.stringify({ validUser, validPass }));
-  console.log('pass defined:', !!validPass);
-
   if (!validPass) {
     return NextResponse.json({ error: 'Admin credentials not configured' }, { status: 500 });
   }
