@@ -177,7 +177,7 @@ export default function SearchBar({ onClose }: Props) {
 
                         <div className={styles.itemInfo}>
                           <p className={styles.itemName}>{highlight(product.nombre, debouncedQuery)}</p>
-                          <p className={styles.itemSub}>{highlight(product.subtitle ?? product.categoria, debouncedQuery)}</p>
+                          <p className={styles.itemSub}>{highlight(product.subcategoria ?? product.categoria, debouncedQuery)}</p>
                         </div>
 
                         <div className={styles.itemRight}>
