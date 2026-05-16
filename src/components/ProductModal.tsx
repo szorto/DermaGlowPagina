@@ -23,9 +23,9 @@ const BADGE_LABELS: Record<string, string> = {
 
 export default function ProductModal({ product, onClose, onOpenCart }: Props) {
   const { addItem } = useCart();
-  const [toast,      setToast]      = useState(false);
-  const [cartOpen,   setCartOpen]   = useState(false);
-  const [atBottom,   setAtBottom]   = useState(false);
+  const [toast,    setToast]    = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [atBottom, setAtBottom] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -40,18 +40,15 @@ export default function ProductModal({ product, onClose, onOpenCart }: Props) {
     return () => { document.body.style.overflow = ''; };
   }, [product]);
 
-  // Reset scroll position and atBottom when product changes
   useEffect(() => {
     setAtBottom(false);
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
-  }, [product]);
+  }, [product?._id]);
 
   function handleScroll() {
     const el = scrollRef.current;
     if (!el) return;
-    // Consider "at bottom" when within 8px of the end
-    const reachedBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 8;
-    setAtBottom(reachedBottom);
+    setAtBottom(el.scrollHeight - el.scrollTop - el.clientHeight < 8);
   }
 
   if (!product) return null;
@@ -82,8 +79,8 @@ export default function ProductModal({ product, onClose, onOpenCart }: Props) {
               <img src={product.imagen} alt={product.nombre} className={styles.img}/>
             ) : (
               <div className={styles.imgPlaceholder}
-                style={{background:`linear-gradient(145deg,${product.bg??'#F5EAC8'},#FDFBF7)`}}>
-                <span className={styles.imgIcon}>{ICON_CHARS[product.icon??'']??'◈'}</span>
+                style={{ background: `linear-gradient(145deg,${product.bg ?? '#F5EAC8'},#FDFBF7)` }}>
+                <span className={styles.imgIcon}>{ICON_CHARS[product.icon ?? ''] ?? '◈'}</span>
               </div>
             )}
             {product.estado && (
@@ -115,7 +112,6 @@ export default function ProductModal({ product, onClose, onOpenCart }: Props) {
               </ul>
             )}
 
-            {/* Desktop: price + button inside scroll area */}
             <div className={styles.priceRow}>
               <span className={styles.price}>{formatPrice(displayPrice(product))}</span>
               {sale && <span className={styles.oldPrice}>{formatPrice(product.precio)}</span>}
@@ -133,7 +129,7 @@ export default function ProductModal({ product, onClose, onOpenCart }: Props) {
             </div>
           </div>
 
-          {/* Mobile only: sticky bar */}
+          {/* Mobile sticky bar */}
           <div className={styles.stickyBar}>
             <div className={styles.stickyPriceRow}>
               <span className={styles.price}>{formatPrice(displayPrice(product))}</span>
@@ -154,9 +150,9 @@ export default function ProductModal({ product, onClose, onOpenCart }: Props) {
       </div>
 
       {toast && (
-        <AddedToCartToast product={product} onDismiss={()=>setToast(false)} onViewCart={handleViewCart}/>
+        <AddedToCartToast product={product} onDismiss={() => setToast(false)} onViewCart={handleViewCart}/>
       )}
-      {cartOpen && <CartDrawer onClose={()=>setCartOpen(false)}/>}
+      {cartOpen && <CartDrawer onClose={() => setCartOpen(false)}/>}
     </>
   );
 }
