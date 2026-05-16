@@ -16,15 +16,20 @@
   box-shadow: var(--shadow-card);
 }
 
-/* Image */
+/* ─── Image ──────────────────────────────────────────────────────────────────── */
+
 .imgWrap {
   position: relative;
   overflow: hidden;
+  /* Force square on all screen sizes */
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  flex-shrink: 0;
 }
 
 .img {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: 100%;
   object-fit: cover;
   display: block;
   transition: transform 0.4s ease;
@@ -34,7 +39,7 @@
 
 .imgPlaceholder {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,7 +60,8 @@
   color: rgba(201, 151, 58, 0.45);
 }
 
-/* Badge */
+/* ─── Badge ──────────────────────────────────────────────────────────────────── */
+
 .badge {
   position: absolute;
   top: 8px;
@@ -73,7 +79,8 @@
 .badgeSale { background: var(--gold);       color: var(--cream);      }
 .badgeBest { background: var(--gold-pale);  color: var(--gold-dim); border: 1px solid var(--gold-light); }
 
-/* Hover overlay */
+/* ─── Hover overlay ──────────────────────────────────────────────────────────── */
+
 .overlay {
   position: absolute;
   inset: 0;
@@ -105,13 +112,27 @@
 
 .overlayBtn:hover { background: var(--gold-pale); }
 
-/* Body */
+/* ─── Body ───────────────────────────────────────────────────────────────────── */
+
 .body {
   padding: 0.75rem 0.875rem 0.875rem;
   display: flex;
   flex-direction: column;
   flex: 1;
   min-width: 0;
+}
+
+/* Marca — shown above name, small gold-tinted label */
+.marca {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .name {
@@ -125,6 +146,7 @@
   white-space: nowrap;
 }
 
+/* subtitle class is reused for subcategoria */
 .subtitle {
   font-size: 10px;
   color: var(--brown-light);
@@ -157,7 +179,8 @@
   text-decoration: line-through;
 }
 
-/* Cart button */
+/* ─── Cart button ────────────────────────────────────────────────────────────── */
+
 .cartBtn {
   margin-top: auto;
   width: 100%;

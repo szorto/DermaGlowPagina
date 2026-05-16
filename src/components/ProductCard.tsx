@@ -22,8 +22,8 @@ const ICON_CHARS: Record<string, string> = {
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
   const [modalOpen, setModalOpen] = useState(false);
-  const [toast, setToast]         = useState(false);
-  const [cartOpen, setCartOpen]   = useState(false);
+  const [toast,     setToast]     = useState(false);
+  const [cartOpen,  setCartOpen]  = useState(false);
   const badge = product.estado ? BADGE_CONFIG[product.estado] : null;
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -69,8 +69,17 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
 
         <div className={styles.body}>
+          {/* Marca */}
+          {product.marca && (
+            <p className={styles.marca}>{product.marca}</p>
+          )}
+
           <h3 className={styles.name}>{product.nombre}</h3>
-          {product.subtitle && <p className={styles.subtitle}>{product.subtitle}</p>}
+
+          {/* Subcategoría (replaces subtitle) */}
+          {product.subcategoria && (
+            <p className={styles.subtitle}>{product.subcategoria}</p>
+          )}
 
           <div className={styles.priceRow}>
             <span className={styles.price}>{formatPrice(displayPrice(product))}</span>

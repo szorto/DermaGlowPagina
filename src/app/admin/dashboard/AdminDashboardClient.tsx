@@ -22,9 +22,9 @@ const CATEGORIES = [
   'Desodorantes','Sueño','Higiene íntima',
 ];
 const EMPTY_FORM: Omit<Product,'_id'> = {
-  sku:'',nombre:'',categoria:CATEGORIES[0],precio:0,
+  sku:'',nombre:'',marca:'',categoria:CATEGORIES[0],precio:0,
   estado:null,precioNuevo:undefined,imagen:'',
-  subtitle:'',description:'',highlights:[],
+  subcategoria:'',description:'',highlights:[],
 };
 const ORDER_ESTADOS = ['pendiente','en proceso','completado','cancelado'] as const;
 const ORDERS_PER_PAGE = 10;
@@ -89,7 +89,8 @@ function ProductForm({initial,onSave,onClose}:{initial?:Product;onSave:(p:Produc
             <Field label="Precio con descuento"><input className={styles.input} type="number" min="0" value={form.precioNuevo??''} onChange={e=>set('precioNuevo',e.target.value?Number(e.target.value):undefined)} /></Field>
           </div>
           <Field label="URL de imagen"><input className={styles.input} value={form.imagen??''} onChange={e=>set('imagen',e.target.value)} /></Field>
-          <Field label="Subtítulo"><input className={styles.input} value={form.subtitle??''} onChange={e=>set('subtitle',e.target.value)} /></Field>
+          <Field label="Marca"><input className={styles.input} value={form.marca??''} placeholder="Ej. La Roche-Posay" onChange={e=>set('marca',e.target.value)} /></Field>
+          <Field label="Subcategoría"><input className={styles.input} value={(form as any).subcategoria??''} placeholder="Ej. FPS 50+, control de grasa" onChange={e=>set('subcategoria' as any,e.target.value)} /></Field>
           <Field label="Descripción"><textarea className={`${styles.input} ${styles.textarea}`} rows={3} value={form.description??''} onChange={e=>set('description',e.target.value)} /></Field>
           <Field label="Highlights (uno por línea)"><textarea className={`${styles.input} ${styles.textarea}`} rows={3} value={hlText} onChange={e=>setHlText(e.target.value)} /></Field>
           {error&&<p className={styles.formError}>{error}</p>}
