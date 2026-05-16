@@ -38,7 +38,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
     }
 
     const body = await req.json();
-    const allowed = ['sku', 'nombre', 'categoria', 'precio', 'estado', 'precioNuevo', 'imagen', 'highlights', 'subtitle', 'description', 'bg', 'icon'];
+    const allowed = ['sku', 'nombre', 'marca', 'categoria', 'subcategoria', 'precio', 'estado', 'precioNuevo', 'imagen', 'highlights', 'description', 'bg', 'icon'];
     const updates: Record<string, unknown> = { updatedAt: new Date() };
 
     for (const key of allowed) {

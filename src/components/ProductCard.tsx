@@ -69,10 +69,10 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
 
         <div className={styles.body}>
-          {/* Marca */}
+          {/* Marca 
           {product.marca && (
             <p className={styles.marca}>{product.marca}</p>
-          )}
+          )}*/}
 
           <h3 className={styles.name}>{product.nombre}</h3>
 
