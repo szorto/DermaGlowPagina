@@ -98,7 +98,7 @@ export default function CartDrawer({ onClose }: Props) {
                     {/* Info */}
                     <div className={styles.itemInfo}>
                       <p className={styles.itemName}>{product.nombre}</p>
-                      {product.subtitle && <p className={styles.itemSub}>{product.subtitle}</p>}
+                      {product.subcategoria && <p className={styles.itemSub}>{product.subcategoria}</p>}
 
                       <div className={styles.itemBottom}>
                         {/* Quantity controls */}
