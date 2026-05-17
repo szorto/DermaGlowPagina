@@ -45,6 +45,7 @@ const CATEGORIES = [
 const EMPTY_FORM: Omit<Product, "_id"> = {
   sku: "",
   nombre: "",
+  marca: '',
   categoria: CATEGORIES[0],
   precio: 0,
   estado: null,
@@ -249,7 +250,15 @@ function ProductForm({
               onChange={(e) => set("imagen", e.target.value)}
             />
           </Field>
-          <Field label="Subtítulo">
+          <Field label="Marca">
+            <input
+              className={styles.input}
+              value={form.marca ?? ""}
+              placeholder="Ej. La Roche-Posay"
+              onChange={(e) => set("marca", e.target.value)}
+            />
+          </Field>
+          <Field label="Subcategoria">
             <input
               className={styles.input}
               value={form.subcategoria ?? ""}
