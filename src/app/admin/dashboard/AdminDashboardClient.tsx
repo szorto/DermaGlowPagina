@@ -252,8 +252,8 @@ function ProductForm({
           <Field label="Subtítulo">
             <input
               className={styles.input}
-              value={form.subtitle ?? ""}
-              onChange={(e) => set("subtitle", e.target.value)}
+              value={form.subcategoria ?? ""}
+              onChange={(e) => set("subcategoria", e.target.value)}
             />
           </Field>
           <Field label="Descripción">
