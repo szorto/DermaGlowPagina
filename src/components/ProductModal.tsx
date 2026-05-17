@@ -97,7 +97,9 @@ export default function ProductModal({ product, onClose, onOpenCart }: Props) {
             className={`${styles.info} ${atBottom ? styles.infoAtBottom : ''}`}
           >
             <p className={styles.subtitleText}>{product.categoria}</p>
-            <h2 className={styles.name}>{product.nombre}</h2>
+            <h2 className={styles.name}>
+              {product.marca ? `${product.marca} ${product.nombre}` : product.nombre}
+            </h2>
             <div className={styles.divider}/>
 
             {product.description && <p className={styles.description}>{product.description}</p>}

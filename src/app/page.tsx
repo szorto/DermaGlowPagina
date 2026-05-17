@@ -1,24 +1,12 @@
 import Hero from '@/components/Hero';
 import PromoBanner from '@/components/PromoBanner';
 import ProductGrid from '@/components/ProductGrid';
-import { fetchProducts } from '@/data/products.server';
-import { type Product, type Category } from '@/data/products';
+import { fetchCategoryPreviews } from '@/data/products.server';
 
 export const revalidate = 60;
 
 export default async function Home() {
-  const products = await fetchProducts();
-
-  const map = new Map<string, Product[]>();
-  for (const p of products) {
-    if (!map.has(p.categoria)) map.set(p.categoria, []);
-    map.get(p.categoria)!.push(p);
-  }
-  const categories: Category[] = [...map.entries()].map(([id, prods]) => ({
-    id,
-    title: id,
-    products: prods,
-  }));
+  const categories = await fetchCategoryPreviews();
 
   return (
     <main>

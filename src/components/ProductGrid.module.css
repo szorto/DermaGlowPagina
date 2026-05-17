@@ -2,7 +2,6 @@
   margin-bottom: 4rem;
   scroll-margin-top: 80px;
   width: 100%;
-  overflow: hidden;
 }
 
 .header {
@@ -48,30 +47,80 @@
   flex-shrink: 0;
   transition: opacity 0.2s;
 }
-
 .viewAll:hover { opacity: 0.7; }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1.25rem;
+/* ─── Carousel ───────────────────────────────────────────────────────────────── */
+
+.carouselWrap {
+  position: relative;
+  /* Extra horizontal padding so arrows don't overlap cards */
+  padding: 0 24px;
 }
 
+/* Flex row — cards have a fixed percentage width so they overflow naturally */
+.row {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 6px; /* room for card hover shadows */
+}
+
+.row::-webkit-scrollbar { display: none; }
+
+/* Each card takes 1/5 of the container minus gaps */
+.cardWrap {
+  flex: 0 0 calc(20% - 1rem);
+  min-width: 140px;
+  scroll-snap-align: start;
+}
+
+/* ─── Arrows ─────────────────────────────────────────────────────────────────── */
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(44, 36, 22, 0.25);
+  transition: background 0.2s, transform 0.15s;
+}
+
+.arrow:hover {
+  background: var(--gold-dim);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.arrowLeft  { left:  -6px; }
+.arrowRight { right: -6px; }
+
+/* ─── Responsive ─────────────────────────────────────────────────────────────── */
+
 @media (max-width: 1100px) {
-  .grid { grid-template-columns: repeat(4, 1fr); }
+  .cardWrap { flex: 0 0 calc(25% - 1rem); }
 }
 
 @media (max-width: 860px) {
-  .grid { grid-template-columns: repeat(3, 1fr); }
+  .cardWrap { flex: 0 0 calc(33.333% - 1rem); }
 }
 
 @media (max-width: 600px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-  }
-}
-
-@media (max-width: 360px) {
-  .grid { grid-template-columns: 1fr; }
+  .row { gap: 0.75rem; }
+  .cardWrap { flex: 0 0 calc(50% - 0.4rem); min-width: 130px; }
+  .carouselWrap { padding: 0 18px; }
+  .arrowLeft  { left:  -4px; }
+  .arrowRight { right: -4px; }
+  .arrow { width: 28px; height: 28px; }
 }

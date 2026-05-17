@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/lib/mongodb';
 import { isAdminAuthenticated } from '@/lib/adminAuth';
-import { serializeProduct } from '@/lib/productHelpers';
+import { serializeProduct, buildSearchFilter } from '@/lib/productHelpers';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,9 +33,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const authed = await isAdminAuthenticated();
-    if (!authed) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    if (!authed) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const body = await req.json();
 
@@ -50,20 +48,21 @@ export async function POST(req: NextRequest) {
     const col = db.collection('DGDB');
 
     const doc = {
-      sku:         body.sku         ? String(body.sku).trim().toUpperCase() : undefined,
-      nombre:      String(body.nombre),
-      categoria:   String(body.categoria),
-      precio:      Number(body.precio),
-      estado:      body.estado      ?? null,
-      precioNuevo: body.precioNuevo != null ? Number(body.precioNuevo) : undefined,
-      imagen:      body.imagen      ?? undefined,
-      highlights:  Array.isArray(body.highlights) ? body.highlights : undefined,
-      subtitle:    body.subtitle    ?? undefined,
-      description: body.description ?? undefined,
-      bg:          body.bg          ?? undefined,
-      icon:        body.icon        ?? undefined,
-      createdAt:   new Date(),
-      updatedAt:   new Date(),
+      sku:          body.sku          ? String(body.sku).trim().toUpperCase() : undefined,
+      nombre:       String(body.nombre),
+      marca:        body.marca        ? String(body.marca).trim()        : undefined,
+      categoria:    String(body.categoria),
+      subcategoria: body.subcategoria ? String(body.subcategoria).trim() : undefined,
+      precio:       Number(body.precio),
+      estado:       body.estado       ?? null,
+      precioNuevo:  body.precioNuevo  != null ? Number(body.precioNuevo) : undefined,
+      imagen:       body.imagen       ?? undefined,
+      highlights:   Array.isArray(body.highlights) ? body.highlights : undefined,
+      description:  body.description  ?? undefined,
+      bg:           body.bg           ?? undefined,
+      icon:         body.icon         ?? undefined,
+      createdAt:    new Date(),
+      updatedAt:    new Date(),
     };
 
     const result = await col.insertOne(doc);

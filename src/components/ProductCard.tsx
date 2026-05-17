@@ -69,12 +69,9 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
 
         <div className={styles.body}>
-          {/* Marca 
-          {product.marca && (
-            <p className={styles.marca}>{product.marca}</p>
-          )}*/}
-
-          <h3 className={styles.name}>{product.nombre}</h3>
+          <h3 className={styles.name}>
+            {product.marca ? `${product.marca} ${product.nombre}` : product.nombre}
+          </h3>
 
           {/* Subcategoría (replaces subtitle) */}
           {product.subcategoria && (

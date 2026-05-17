@@ -12,12 +12,19 @@ const categorias = [
   'Protectores solares',
   'Serums',
   'Hidratantes',
+  'Limpieza facial',
+  'Limpieza corporal',
   'Acné',
+  'Antiedad',
+  'Mascarillas',
   'Contorno de ojos',
-  'Cabello, pestañas, cejas y uñas',
+  'Labios',
+  'Capilar',
+  'Uñas',
   'Desodorantes',
   'Sueño',
   'Higiene íntima',
+  'Suplementos',
 ];
 
 const navLinks = [
