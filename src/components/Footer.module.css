@@ -34,6 +34,7 @@
 .logo span { color: var(--gold); }
 
 .tagline {
+  font-family: var(--font-body);
   font-size: 13px;
   color: var(--brown-light);
   line-height: 1.7;
@@ -44,6 +45,10 @@
 .socials { display: flex; gap: 1rem; flex-wrap: wrap; }
 
 .social {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-body);
   font-size: 11px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -53,7 +58,14 @@
 
 .social:hover { color: var(--gold); }
 
+/* Instagram icon inherits color from .social */
+.social svg {
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
 .colTitle {
+  font-family: var(--font-body);
   font-size: 11px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -70,6 +82,7 @@
 }
 
 .colLink {
+  font-family: var(--font-body);
   font-size: 13px;
   color: var(--brown-light);
   transition: color 0.2s;
@@ -83,6 +96,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-family: var(--font-body);
   font-size: 11px;
   letter-spacing: 1px;
   color: var(--brown-light);
@@ -91,7 +105,6 @@
 }
 
 .bottomLinks { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-
 .bottomLinks a { color: var(--brown-light); transition: color 0.2s; }
 .bottomLinks a:hover { color: var(--gold); }
 
@@ -101,6 +114,6 @@
 }
 
 @media (max-width: 480px) {
-  .inner { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .inner { grid-template-columns: 1fr; gap: 1.5rem; }
   .bottom { flex-direction: column; text-align: center; }
 }

@@ -85,16 +85,16 @@
   position: absolute;
   top: calc(100% + 12px);
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(-6px);
   background: var(--cream);
   border: 1px solid var(--border);
   border-radius: 6px;
   box-shadow: 0 12px 32px rgba(44, 36, 22, 0.12);
-  min-width: 240px;
+  /* Width grows with columns — each column ~200px */
+  min-width: 200px;
   padding: 0.75rem 0;
   opacity: 0;
   pointer-events: none;
-  transform: translateX(-50%) translateY(-6px);
   transition: opacity 0.18s ease, transform 0.18s ease;
   z-index: 300;
 }
@@ -133,6 +133,11 @@
 .dropdownList {
   list-style: none;
   padding: 0;
+  /* Multi-column: max 10 items per column, each column ~200px wide */
+  display: grid;
+  grid-template-rows: repeat(10, auto);
+  grid-auto-flow: column;
+  grid-auto-columns: 200px;
 }
 
 .dropdownItem {

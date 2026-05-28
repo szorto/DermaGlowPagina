@@ -188,6 +188,25 @@
   margin-bottom: 2px;
 }
 
+.itemPriceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.itemSalePrice {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gold-dim);
+}
+
+.itemOrigPrice {
+  font-size: 11px;
+  color: var(--brown-muted);
+  text-decoration: line-through;
+}
+
 .itemSize {
   font-size: 10px;
   color: var(--brown-muted);

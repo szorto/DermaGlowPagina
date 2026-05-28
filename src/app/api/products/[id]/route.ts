@@ -38,7 +38,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
     }
 
     const body = await req.json();
-    const allowed = ['sku', 'nombre', 'marca', 'categoria', 'subcategoria', 'precio', 'estado', 'precioNuevo', 'imagen', 'highlights', 'description', 'bg', 'icon'];
+    const allowed = ['sku', 'nombre', 'marca', 'categoria', 'subcategoria', 'precio', 'estado', 'precioNuevo', 'imagen', 'highlights', 'description', 'bg', 'icon', 'cantidad', 'unidad'];
     const updates: Record<string, unknown> = { updatedAt: new Date() };
 
     for (const key of allowed) {
@@ -48,7 +48,8 @@ export async function PUT(req: NextRequest, { params }: Params) {
     // Coerce types
     if (updates.precio      != null) updates.precio      = Number(updates.precio);
     if (updates.precioNuevo != null) updates.precioNuevo = Number(updates.precioNuevo);
-    if (updates.sku         != null) updates.sku         = String(updates.sku).trim().toUpperCase();
+    if (updates.sku      != null) updates.sku      = String(updates.sku).trim().toUpperCase();
+    if (updates.cantidad != null) updates.cantidad = Number(updates.cantidad);
 
     const db  = await getDb();
     const col = db.collection('DGDB');

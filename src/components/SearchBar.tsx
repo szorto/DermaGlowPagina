@@ -182,6 +182,14 @@ export default function SearchBar({ onClose }: Props) {
 
                         <div className={styles.itemRight}>
                           <span className={styles.itemPrice}>{formatPrice(displayPrice(product))}</span>
+                          {product.precioNuevo != null && (
+                            <>
+                              <span className={styles.itemOld}>{formatPrice(product.precio)}</span>
+                              <span className={styles.itemDiscount}>
+                                -{Math.round((1 - product.precioNuevo / product.precio) * 100)}%
+                              </span>
+                            </>
+                          )}
                         </div>
 
                         <svg className={styles.arrow} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

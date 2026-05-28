@@ -1,18 +1,21 @@
 export type Badge = 'new' | 'sale' | 'best' | null;
+export type Unidad = 'g' | 'mg' | 'ml' | 'oz' | 'unidad';
 
 export interface Product {
   _id: string;
   sku?:          string;
   nombre:        string;
-  marca?:        string;   // brand name, shown on card
+  marca?:        string;
   categoria:     string;
-  subcategoria?: string;   // replaces subtitle
+  subcategoria?: string;
   precio:        number;
   estado:        Badge;
   precioNuevo?:  number;
   imagen?:       string;
   highlights?:   string[];
   description?:  string;
+  cantidad?:     number;   // numeric amount e.g. 50
+  unidad?:       Unidad;   // unit e.g. 'ml'
   bg?:           string;
   icon?:         string;
 }

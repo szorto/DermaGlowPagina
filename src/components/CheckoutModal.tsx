@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useCart } from '@/context/CartContext';
-import { displayPrice } from '@/data/products';
-import styles from './CheckoutModal.module.css';
+import { useState } from "react";
+import { useCart } from "@/context/CartContext";
+
+import styles from "./CheckoutModal.module.css";
 
 interface Props {
   onClose: () => void;
@@ -12,43 +12,47 @@ interface Props {
 
 export default function CheckoutModal({ onClose, onSuccess }: Props) {
   const { items, totalPrice, clearCart } = useCart();
-  const [telefono, setTelefono] = useState('');
-  const [correo,   setCorreo]   = useState('');
-  const [loading,  setLoading]  = useState(false);
-  const [error,    setError]    = useState('');
+  const [telefono, setTelefono] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleConfirm() {
     if (!telefono.trim()) {
-      setError('El número de teléfono es requerido.');
+      setError("El número de teléfono es requerido.");
       return;
     }
     if (!/^[\d\s\+\-\(\)]{7,20}$/.test(telefono.trim())) {
-      setError('Ingresa un número de teléfono válido.');
+      setError("Ingresa un número de teléfono válido.");
       return;
     }
 
     setLoading(true);
-    setError('');
+    setError("");
 
-    const orderItems = items.map(({ product, quantity }) => ({
-      _id:        product._id,
-      sku:        product.sku,
-      nombre:     product.nombre,
-      categoria:  product.categoria,
-      precio:     product.precio,
-      precioNuevo: product.precioNuevo,
-      cantidad:   quantity,
-      subtotal:   displayPrice(product) * quantity,
-    }));
+    const orderItems = items.map(
+      ({ product, quantity, snapshotPrice, snapshotOrig }) => ({
+        _id: product._id,
+        sku: product.sku,
+        nombre: product.nombre,
+        marca: product.marca,
+        categoria: product.categoria,
+        // Store snapshotted prices — these never change even if product is edited later
+        precio: snapshotOrig ?? snapshotPrice, // original price (or sale price if no discount)
+        precioFinal: snapshotPrice, // price actually charged
+        cantidad: quantity,
+        subtotal: snapshotPrice * quantity,
+      }),
+    );
 
-    const res = await fetch('/api/orders', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         telefono: telefono.trim(),
-        correo:   correo.trim() || undefined,
-        items:    orderItems,
-        total:    totalPrice,
+        correo: correo.trim() || undefined,
+        items: orderItems,
+        total: totalPrice,
       }),
     });
 
@@ -56,7 +60,7 @@ export default function CheckoutModal({ onClose, onSuccess }: Props) {
 
     if (!res.ok) {
       const d = await res.json();
-      setError(d.error ?? 'Error al enviar el pedido. Intenta de nuevo.');
+      setError(d.error ?? "Error al enviar el pedido. Intenta de nuevo.");
       return;
     }
 
@@ -65,30 +69,39 @@ export default function CheckoutModal({ onClose, onSuccess }: Props) {
   }
 
   const fmt = (n: number) =>
-    new Intl.NumberFormat('es-HN', { style: 'currency', currency: 'HNL', minimumFractionDigits: 0 }).format(n);
+    new Intl.NumberFormat("es-HN", {
+      style: "currency",
+      currency: "HNL",
+      minimumFractionDigits: 0,
+    }).format(n);
 
   return (
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-
         {/* Header */}
         <div className={styles.header}>
           <h2 className={styles.title}>Confirmar pedido</h2>
-          <button className={styles.closeBtn} onClick={onClose} aria-label="Cerrar">✕</button>
+          <button
+            className={styles.closeBtn}
+            onClick={onClose}
+            aria-label="Cerrar"
+          >
+            ✕
+          </button>
         </div>
 
         {/* Order summary */}
         <div className={styles.summary}>
           <p className={styles.summaryLabel}>Resumen</p>
           <ul className={styles.itemList}>
-            {items.map(({ product, quantity }) => (
+            {items.map(({ product, quantity, snapshotPrice }) => (
               <li key={product._id} className={styles.summaryItem}>
                 <span className={styles.summaryName}>
                   {product.nombre}
                   <span className={styles.summaryQty}> × {quantity}</span>
                 </span>
                 <span className={styles.summaryPrice}>
-                  {fmt(displayPrice(product) * quantity)}
+                  {fmt(snapshotPrice * quantity)}
                 </span>
               </li>
             ))}
@@ -119,7 +132,8 @@ export default function CheckoutModal({ onClose, onSuccess }: Props) {
 
           <div className={styles.field}>
             <label className={styles.label}>
-              Correo electrónico <span className={styles.optional}>(opcional)</span>
+              Correo electrónico{" "}
+              <span className={styles.optional}>(opcional)</span>
             </label>
             <input
               className={styles.input}
@@ -136,11 +150,19 @@ export default function CheckoutModal({ onClose, onSuccess }: Props) {
 
         {/* Actions */}
         <div className={styles.footer}>
-          <button className={styles.btnSecondary} onClick={onClose} disabled={loading}>
+          <button
+            className={styles.btnSecondary}
+            onClick={onClose}
+            disabled={loading}
+          >
             Cancelar
           </button>
-          <button className={styles.btnPrimary} onClick={handleConfirm} disabled={loading}>
-            {loading ? 'Enviando…' : 'Confirmar pedido'}
+          <button
+            className={styles.btnPrimary}
+            onClick={handleConfirm}
+            disabled={loading}
+          >
+            {loading ? "Enviando…" : "Confirmar pedido"}
           </button>
         </div>
       </div>

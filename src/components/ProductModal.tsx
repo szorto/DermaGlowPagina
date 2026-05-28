@@ -100,6 +100,9 @@ export default function ProductModal({ product, onClose, onOpenCart }: Props) {
             <h2 className={styles.name}>
               {product.marca ? `${product.marca} ${product.nombre}` : product.nombre}
             </h2>
+            {product.cantidad != null && product.unidad && (
+              <p className={styles.cantidadTag}>{product.cantidad} {product.unidad}</p>
+            )}
             <div className={styles.divider}/>
 
             {product.description && <p className={styles.description}>{product.description}</p>}

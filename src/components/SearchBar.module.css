@@ -215,6 +215,16 @@
   text-decoration: line-through;
 }
 
+.itemDiscount {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--white);
+  background: var(--gold);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
 .arrow {
   color: var(--brown-light);
   flex-shrink: 0;
