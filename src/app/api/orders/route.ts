@@ -6,12 +6,14 @@ import { isAdminAuthenticated } from '@/lib/adminAuth';
 
 export interface OrderItem {
   _id: string;
+  sku?: string;
   nombre: string;
+  marca?: string;
   categoria: string;
-  precio: number;        // original price
-  precioNuevo?: number;  // discounted price if applicable
+  precio: number;
+  precioFinal: number;
   cantidad: number;
-  subtotal: number;      // displayPrice * cantidad
+  subtotal: number;
 }
 
 export interface Order {
