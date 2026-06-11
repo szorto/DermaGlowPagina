@@ -9,6 +9,50 @@
   width: 100%;
 }
 
+/* ── Announcement / top bar ── */
+.topBar {
+  background: var(--border);
+  width: 100%;
+  padding: 6px 1.25rem;
+}
+
+.topBarInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.topBarItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--brown-deep);
+  white-space: nowrap;
+}
+
+.topBarItem svg {
+  color: var(--brown-deep);
+  flex-shrink: 0;
+}
+
+.topBarDivider {
+  color: rgba(212, 184, 106, 0.3);
+  font-size: 10px;
+}
+
+@media (max-width: 600px) {
+  .topBarDivider { display: none; }
+  .topBarInner   { gap: 0.5rem; }
+  .topBarItem    { font-size: 9px; letter-spacing: 1px; }
+}
+
 .nav {
   max-width: 1200px;
   margin: 0 auto;
