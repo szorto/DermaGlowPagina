@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import SearchBar from './SearchBar';
@@ -25,6 +25,13 @@ export default function Navbar() {
   const [dropdownOpen,   setDropdownOpen]   = useState(false);
   const [mobileCategOpen,setMobileCategOpen]= useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [atTop, setAtTop] = useState(true);
+
+  useEffect(() => {
+    const onScroll = () => setAtTop(window.scrollY < 10);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const handleMouseEnter = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -42,7 +49,7 @@ export default function Navbar() {
     <>
       <header className={styles.header}>
         {/* ── Announcement bar ── */}
-        <div className={styles.topBar}>
+        <div className={`${styles.topBar} ${atTop ? styles.topBarVisible : styles.topBarHidden}`}>
           <div className={styles.topBarInner}>
             <span className={styles.topBarItem}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
